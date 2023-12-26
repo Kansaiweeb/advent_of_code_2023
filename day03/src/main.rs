@@ -143,7 +143,7 @@ fn find_part_numbers(map: &Vec<&char>, width: &usize) -> Vec<(usize, usize, usiz
             || (!cell.is_ascii_digit() && is_being_processed)
             || index == map.len() - 1
         {
-            if (intermediate_part_number.is_empty()) {
+            if intermediate_part_number.is_empty() {
                 continue;
             }
             let a = if (index + 1) % width == 0 {
