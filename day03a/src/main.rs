@@ -3,7 +3,7 @@ use std::{collections::HashMap, vec};
 fn main() {
     let input = include_str!("./input.txt");
     let lines: Vec<_> = input.lines().collect();
-    let width = lines.get(0).unwrap().len();
+    let width = lines.first().unwrap().len();
     let map: Vec<char> = input.chars().collect();
     println!("{}", width);
     // //545150
@@ -41,7 +41,7 @@ fn main() {
             if gear.len() == 1 {
                 continue;
             }
-            sum = sum + gear.iter().cloned().reduce(|a, b| (a * b)).unwrap();
+            sum += gear.iter().cloned().reduce(|a, b| (a * b)).unwrap();
             println!("{}", sum);
         }
         println!("{:?}", gears_map);
@@ -135,7 +135,7 @@ fn check_index_for_special_neighbour(
     width: &usize,
 ) -> (bool, Option<usize>) {
     let mut indices_to_check: Vec<usize> = vec![];
-    let is_in_last_or_first_row = index + 1 <= *width || map.len() - index + 1 <= *width;
+    let is_in_last_or_first_row = index < *width || map.len() - index < *width;
     let is_in_last_or_first_column = (index + 1) % width == 1 || (index + 1) % width == 0;
     //first and last row
     if is_in_last_or_first_row {
@@ -192,7 +192,7 @@ fn check_index_for_special_neighbour(
     {
         let cell = map
             .get(*index1)
-            .expect(&format!("error at index {}", index1));
+            .unwrap_or_else(|| panic!("error at index {}", index1));
         if !(cell.is_ascii_digit() || cell.eq(&&'.')) {
             let mut special_char_coord: Option<usize> = None;
             if cell.eq(&&'*') {
@@ -202,7 +202,7 @@ fn check_index_for_special_neighbour(
         }
     }
 
-    return (false, None);
+    (false, None)
 }
 
 fn find_part_numbers(map: &Vec<&char>, width: &usize) -> Vec<(usize, usize, usize)> {
@@ -250,7 +250,7 @@ fn find_part_numbers(map: &Vec<&char>, width: &usize) -> Vec<(usize, usize, usiz
     part_numbers
 }
 
-fn print_map(map: &Vec<&char>, width: &usize) {
+fn print_map(map: &[&char], width: &usize) {
     for (index, cell) in map.iter().enumerate() {
         print!("{}", cell);
         if (index + 1) % width == 0 {
