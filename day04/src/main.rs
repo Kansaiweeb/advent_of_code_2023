@@ -37,7 +37,7 @@ impl Game {
 impl FromStr for Game {
     type Err = ParseGameError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let (id_string, numbers_string) = s
+        let (_, numbers_string) = s
             .strip_prefix("Card ")
             .and_then(|s| s.split_once(':'))
             .ok_or(ParseGameError)?;
