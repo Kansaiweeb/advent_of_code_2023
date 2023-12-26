@@ -1,4 +1,3 @@
-use core::num;
 use std::str::FromStr;
 
 fn main() {
@@ -6,9 +5,8 @@ fn main() {
     let lines = input.lines();
     let games: Vec<Game> = lines
         .into_iter()
-        .map(|line| Game::from_str(line))
-        .filter(|game| game.is_ok())
-        .map(|game| game.unwrap())
+        .map(Game::from_str)
+        .filter_map(|game| game.ok())
         .collect();
     let points_sum: usize = games.iter().map(|game| game.calculate_points()).sum();
     println!("{:?}", points_sum);
@@ -25,14 +23,14 @@ impl Game {
     fn calculate_points(&self) -> usize {
         let mut points = 0;
         for number in &self.winning_numbers {
-            if self.numbers.contains(&number) {
+            if self.numbers.contains(number) {
                 points += 1;
             }
         }
         if points == 0 {
             0
         } else {
-            (2 as usize).pow(points - 1)
+            (2_usize).pow(points - 1)
         }
     }
 }
@@ -42,18 +40,16 @@ impl FromStr for Game {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let (id_string, numbers_string) = s
             .strip_prefix("Card ")
-            .and_then(|s| s.split_once(":"))
+            .and_then(|s| s.split_once(':'))
             .ok_or(ParseGameError)?;
         let (scratch_numbers_string, winning_numbers_string) =
-            numbers_string.split_once("|").ok_or(ParseGameError)?;
+            numbers_string.split_once('|').ok_or(ParseGameError)?;
 
         let scratch_numbers: Vec<usize> = scratch_numbers_string
-            .trim()
             .split_whitespace()
             .map(|e| e.parse::<usize>().unwrap())
             .collect();
         let winning_numbers: Vec<usize> = winning_numbers_string
-            .trim()
             .split_whitespace()
             .map(|e| e.parse::<usize>().unwrap())
             .collect();
