@@ -42,5 +42,5 @@ fn get_first_and_last_digits(line: &str) -> (char, char) {
         }
     }
     // println!("{}{}", first_digit, last_digit);
-    return (first_digit, last_digit);
+    (first_digit, last_digit)
 }
