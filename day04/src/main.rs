@@ -14,7 +14,6 @@ fn main() {
 
 #[derive(Debug)]
 struct Game {
-    id: usize,
     numbers: Vec<usize>,
     winning_numbers: Vec<usize>,
 }
@@ -54,7 +53,6 @@ impl FromStr for Game {
             .map(|e| e.parse::<usize>().unwrap())
             .collect();
         Ok(Game {
-            id: id_string.trim().parse().map_err(|_| ParseGameError)?,
             numbers: scratch_numbers,
             winning_numbers,
         })
