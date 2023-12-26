@@ -1,6 +1,6 @@
 fn main() {
     let input = include_str!("./input.txt");
-    let split_input: Vec<&str> = input.split("\n").collect();
+    let split_input: Vec<&str> = input.split('\n').collect();
     let mut sum = 0;
     for line in split_input {
         let mut first_digit = '0';
@@ -20,7 +20,7 @@ fn main() {
         }
         // println!("{}, {}", first_digit, last_digit);
         let result: usize = format!("{}{}", first_digit, last_digit).parse().unwrap();
-        sum = sum + result;
+        sum += result;
     }
 
     println!("{}", sum);
